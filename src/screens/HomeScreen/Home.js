@@ -1,11 +1,13 @@
-import React from "react";
-import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomButton from "../../../components/CustombButton/CustomButton";
 import CustomInput from "../../../components/CustomInput/CustomInput";
 
 const { height, width } = Dimensions.get('screen')
 
 const Home = () => {
+
+    const [selected, setselected] = useState(null);
     const catgoriesList = [
         {
             id: 1,
@@ -34,8 +36,29 @@ const Home = () => {
         },
 
     ]
+
+    const Food = [
+        {
+            id: 1,
+            item: `Spaghetti with ${'\n'}shrimp and basil`,
+            image: require('../../../Assets/Images/Spagheti1.png'),
+            details: '',
+        },
+        {
+            id: 2,
+            item: `Pizza margarita ${'\n'}European`,
+            image: require('../../../Assets/Images/beef.png'),
+            details: '',
+        },
+        // {
+        //     id:3,
+        //     item:'Spaghetti with shrimp and basil',
+        //     image:'',
+        //     details:'',
+        // }
+    ]
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
             <ScrollView>
                 <View style={style.HeaderConatiner}>
                     <View style={style.Header}>
@@ -63,14 +86,41 @@ const Home = () => {
                         {
                             catgoriesList.map((item) => {
                                 return (
-                                    <View key={item.id} style={style.ItemList}>
+                                    <TouchableOpacity
+                                        key={item.id}
+                                        style={[style.ItemList, { backgroundColor: item.id == selected ? '#6ED39D' : 'white' }]}
+                                        onPress={() => {
+                                            setselected(item.id)
+                                            console.log(item.id);
+                                        }}
+                                    >
                                         <Image source={item.image} style={style.ItemImage} />
                                         <Text>{item.name}</Text>
-                                    </View>
+
+                                    </TouchableOpacity>
 
                                 )
                             })
                         }
+                    </ScrollView>
+                </View>
+                <View style={{}}>
+                    <ScrollView>
+                        {Food.map((item) => {
+                            return (
+                                <TouchableOpacity key={item.id} style={{ width: '90%', height: height * 0.15,borderColor:'#FF6B57',
+                                 borderWidth: 1, alignSelf: 'center', marginTop: 20, flexDirection: 'row', justifyContent: 'space-around',borderRadius:10 }} >
+                                    <Image
+                                        source={item.image}
+                                        style={{ width: 100, height: 100, borderRadius: 20,marginTop:10 }}
+                                    />
+                                    <Text style={{color:'black',fontWeight:'900',fontSize:16,marginTop:15}}>{item.item}</Text>
+                                    <TouchableOpacity style={{width:80,height:40,alignItems:'center',marginTop:20,backgroundColor:'#FF6B57',borderRadius:20}}>
+                                        <Text style={{paddingTop:7,color:'white'}}>Add Cart</Text>
+                                    </TouchableOpacity>
+                                </TouchableOpacity>
+                            )
+                        })}
                     </ScrollView>
                 </View>
             </ScrollView>
@@ -94,7 +144,7 @@ const style = StyleSheet.create({
         height: height * 0.09,
         // backgroundColor: 'pink',
     },
-    ProfileView:{
+    ProfileView: {
         width: '13%',
         height: '55%',
         borderRadius: 30,
@@ -137,13 +187,16 @@ const style = StyleSheet.create({
         marginLeft: 15,
         width: width * 0.2,
         height: height * 0.1,
-        backgroundColor: 'white',
-        alignItems: 'center'
+        // backgroundColor: 'white',
+        alignItems: 'center',
+        borderRadius: 30
     },
     ItemImage: {
-        width: 60,
+        width: 50,
         height: 50,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        backgroundColor: 'white',
+        borderRadius: 30
     }
 })
 export default Home
